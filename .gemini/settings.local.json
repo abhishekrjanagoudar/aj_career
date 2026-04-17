@@ -1,0 +1,34 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node:*)",
+      "WebFetch(domain:careers.daimlertruck.com)",
+      "WebFetch(domain:www.pixelrobotics.de)",
+      "WebFetch(domain:b-e-c.de)",
+      "WebFetch(domain:noyes-robotics.com)",
+      "WebFetch(domain:baer-automation.com)",
+      "WebFetch(domain:www.ebz-group.com)",
+      "WebFetch(domain:www.kuka.com)",
+      "WebFetch(domain:www.abb.com)",
+      "WebFetch(domain:www.fanuc.eu)",
+      "WebFetch(domain:careers.ebz-group.com)",
+      "WebFetch(domain:www.beckhoff.com)",
+      "WebFetch(domain:www.mobilerobots.com)",
+      "WebFetch(domain:www.clearpathrobotics.com)",
+      "WebFetch(domain:www.dlr.de)",
+      "WebFetch(domain:www.fraunhofer.de)",
+      "WebFetch(domain:www.siemens.com)",
+      "WebFetch(domain:www.bosch-careers.com)",
+      "WebSearch",
+      "WebFetch(domain:de.indeed.com)",
+      "WebFetch(domain:www.stepstone.de)",
+      "WebFetch(domain:www.glassdoor.com)",
+      "mcp__claude_ai_Indeed__search_jobs",
+      "WebFetch(domain:jobs.dlr.de)",
+      "WebFetch(domain:jobs.fraunhofer.de)",
+      "WebFetch(domain:jobs.neura-robotics.com)",
+      "Bash(mkdir -p /home/abhishek-janagoudar/Dokumente/Jobs/aj_career/batch/tracker-additions)",
+      "Bash(mkdir -p /home/abhishek-janagoudar/Dokumente/Jobs/aj_career/reports)"
+    ]
+  }
+}
