@@ -1,30 +1,25 @@
-# Modo: project — Evaluación de Proyecto Portfolio
+# Mode: project — Portfolio Project Evaluation
 
-Scoring 6 dimensiones (1-5):
+Score each project on 6 weighted dimensions:
 
-| Dimensión | Peso | 5 = ... | 1 = ... |
-|-----------|------|---------|---------|
-| Señal para roles target | 25% | Directamente demuestra skill del JD | No relacionado |
-| Unicidad | 20% | Nadie ha hecho esto | Todo el mundo lo tiene |
-| Demo-ability | 20% | Live demo en 2 min | Solo código, no visual |
-| Potencial de métricas | 15% | Métricas claras (latency, cost, accuracy) | Sin métricas posibles |
-| Tiempo a MVP | 10% | 1 semana | 3+ meses |
-| Potencial de historia STAR | 10% | Historia rica con trade-offs | Solo implementación |
+| Dimension | Weight | 5 = ... | 1 = ... |
+|-----------|--------|---------|---------|
+| Signal for target roles | 25% | Directly proves role skill | Unrelated |
+| Uniqueness | 20% | Distinctive | Commodity |
+| Demo-ability | 20% | Clear live demo in 2 min | Code only |
+| Metric potential | 15% | Clear measurable outcomes | No measurable outcome |
+| Time to MVP | 10% | ~1 week | 3+ months |
+| STAR story potential | 10% | Rich trade-offs and outcomes | Pure implementation |
 
-## Requisitos de "Interview Pack"
+## Interview Pack requirements
 
-Para cada proyecto aprobado:
-1. **One-pager**: producto + arquitectura + métricas + plan de evaluación
-2. **Demo**: URL live o walkthrough grabado de 2 min
-3. **Postmortem**: qué funcionó, qué no, mitigaciones
+For approved projects:
+1. One-pager (product, architecture, metrics, evaluation plan)
+2. 2-minute demo (live or recorded)
+3. Postmortem (what worked, what failed, mitigations)
 
-## Plan 80/20
+## Verdicts
 
-- Semana 1 → MVP con métrica core
-- Semana 2 → polish + interview pack
-
-## Veredictos
-
-- **CONSTRUIR** → plan con milestones semanales
-- **SKIP** → por qué y qué hacer en su lugar
-- **PIVOTAR A [alternativa]** → variante más impactante
+- **BUILD**
+- **SKIP**
+- **PIVOT TO [alternative]**

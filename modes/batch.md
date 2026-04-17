@@ -1,111 +1,51 @@
-# Modo: batch — Procesamiento Masivo de Ofertas
+# Mode: batch — Bulk Offer Processing
 
-Dos modos de uso: **conductor --chrome** (navega portales en tiempo real) o **standalone** (script para URLs ya recolectadas).
+Two usage modes: **conductor --chrome** (live portal browsing) or **standalone script** (pre-collected URLs).
 
-## Arquitectura
+## Architecture
 
-```
-Agent Conductor (claude --chrome --dangerously-skip-permissions)
-  │
-  │  Chrome: navega portales (sesiones logueadas)
-  │  Lee DOM directo — el usuario ve todo en tiempo real
-  │
-  ├─ Oferta 1: lee JD del DOM + URL
-  │    └─► agent worker (claude/gemini) → report .md + PDF + tracker-line
-  │
-  ├─ Oferta 2: click siguiente, lee JD + URL
-  │    └─► agent worker (claude/gemini) → report .md + PDF + tracker-line
-  │
-  └─ Fin: merge tracker-additions → applications.md + resumen
-```
+Conductor orchestrates navigation and dispatches each offer to clean worker agents (Claude or Gemini). Workers produce report, PDF, and tracker addition.
 
-Cada worker es un proceso de CLI de agente (Claude o Gemini) con contexto limpio. El conductor solo orquesta.
+## Files
 
-## Archivos
+- `batch/batch-input.tsv` — input URLs
+- `batch/batch-state.tsv` — resumable state
+- `batch/batch-runner.sh` — orchestrator
+- `batch/batch-prompt.md` — worker prompt
+- `batch/logs/` — per-offer logs
+- `batch/tracker-additions/` — tracker lines
 
-```
-batch/
-  batch-input.tsv               # URLs (por conductor o manual)
-  batch-state.tsv               # Progreso (auto-generado, gitignored)
-  batch-runner.sh               # Script orquestador standalone
-  batch-prompt.md               # Prompt template para workers
-  logs/                         # Un log por oferta (gitignored)
-  tracker-additions/            # Líneas de tracker (gitignored)
-```
+## Conductor mode
 
-## Modo A: Conductor --chrome
+1. Load `batch-state.tsv`
+2. Navigate portal in Chrome
+3. Extract URLs and append to input
+4. For each pending offer:
+   - Open listing, capture JD text
+   - Save temporary JD file
+   - Compute next report number
+   - Run batch runner with selected CLI
+   - Update state/logs
+5. Handle pagination
+6. Merge tracker additions into `applications.md`
 
-1. **Leer estado**: `batch/batch-state.tsv` → saber qué ya se procesó
-2. **Navegar portal**: Chrome → URL de búsqueda
-3. **Extraer URLs**: Leer DOM de resultados → extraer lista de URLs → append a `batch-input.tsv`
-4. **Para cada URL pendiente**:
-   a. Chrome: click en la oferta → leer JD text del DOM
-   b. Guardar JD a `/tmp/batch-jd-{id}.txt`
-   c. Calcular siguiente REPORT_NUM secuencial
-   d. Ejecutar via Bash:
-      ```bash
-      # Claude:
-      AGENT_CLI=claude batch/batch-runner.sh
-
-      # Gemini:
-      AGENT_CLI=gemini batch/batch-runner.sh
-
-      # Comando custom:
-      batch/batch-runner.sh --agent-cmd "gemini -p --system-instruction-file"
-      ```
-   e. Actualizar `batch-state.tsv` (completed/failed + score + report_num)
-   f. Log a `logs/{report_num}-{id}.log`
-   g. Chrome: volver atrás → siguiente oferta
-5. **Paginación**: Si no hay más ofertas → click "Next" → repetir
-6. **Fin**: Merge `tracker-additions/` → `applications.md` + resumen
-
-## Modo B: Script standalone
+## Standalone mode
 
 ```bash
 batch/batch-runner.sh [OPTIONS]
 ```
 
-Opciones:
-- `--dry-run` — lista pendientes sin ejecutar
-- `--retry-failed` — solo reintenta fallidas
-- `--start-from N` — empieza desde ID N
-- `--parallel N` — N workers en paralelo
-- `--max-retries N` — intentos por oferta (default: 2)
-- `--agent-cli claude|gemini` — CLI a usar (default: claude)
-- `--agent-cmd "..."` — comando custom (override)
+Options include:
+- `--dry-run`
+- `--retry-failed`
+- `--start-from N`
+- `--parallel N`
+- `--max-retries N`
+- `--agent-cli claude|gemini`
+- `--agent-cmd "..."`
 
-## Formato batch-state.tsv
+## Reliability
 
-```
-id	url	status	started_at	completed_at	report_num	score	error	retries
-1	https://...	completed	2026-...	2026-...	002	4.2	-	0
-2	https://...	failed	2026-...	2026-...	-	-	Error msg	1
-3	https://...	pending	-	-	-	-	-	0
-```
-
-## Resumabilidad
-
-- Si muere → re-ejecutar → lee `batch-state.tsv` → skip completadas
-- Lock file (`batch-runner.pid`) previene ejecución doble
-- Cada worker es independiente: fallo en oferta #47 no afecta a las demás
-
-## Workers (agent CLI)
-
-Cada worker recibe `batch-prompt.md` como system prompt. Es self-contained.
-
-El worker produce:
-1. Report `.md` en `reports/`
-2. PDF en `output/`
-3. Línea de tracker en `batch/tracker-additions/{id}.tsv`
-4. JSON de resultado por stdout
-
-## Gestión de errores
-
-| Error | Recovery |
-|-------|----------|
-| URL inaccesible | Worker falla → conductor marca `failed`, siguiente |
-| JD detrás de login | Conductor intenta leer DOM. Si falla → `failed` |
-| Portal cambia layout | Conductor razona sobre HTML, se adapta |
-| Worker crashea | Conductor marca `failed`, siguiente. Retry con `--retry-failed` |
-| Conductor muere | Re-ejecutar → lee state → skip completadas |
-| PDF falla | Report .md se guarda. PDF queda pendiente |
+- Resume from `batch-state.tsv`
+- PID lock avoids double runs
+- Offer-level isolation prevents global failure
