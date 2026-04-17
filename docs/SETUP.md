@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- [Claude Code](https://claude.ai/code) installed and configured
+- [Claude Code](https://claude.ai/code) or Gemini CLI installed and configured
 - Node.js 18+ (for PDF generation and utility scripts)
 - (Optional) Go 1.21+ (for the dashboard TUI)
 
@@ -44,10 +44,14 @@ Edit `portals.yml`:
 
 ### 5. Start using
 
-Open Claude Code in this directory:
+Open your preferred agent CLI in this directory:
 
 ```bash
+# Claude Code
 claude
+
+# or Gemini CLI
+gemini
 ```
 
 Then paste a job offer URL or description. Career-ops will automatically evaluate it, generate a report, create a tailored PDF, and track it.

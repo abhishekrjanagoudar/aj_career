@@ -2,7 +2,7 @@
 
 **[:gb: English](#what-is-this)** | **[:es: Español](#es-versión-en-español)**
 
-> AI-powered job search pipeline built on Claude Code. Evaluate offers, generate tailored CVs, scan portals, and track everything -- powered by AI agents.
+> AI-powered job search pipeline for Claude Code or Gemini CLI. Evaluate offers, generate tailored CVs, scan portals, and track everything -- powered by AI agents.
 
 ![Claude Code](https://img.shields.io/badge/Claude_Code-000?style=flat&logo=anthropic&logoColor=white)
 ![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat&logo=node.js&logoColor=white)
@@ -65,10 +65,14 @@ cp templates/portals.example.yml portals.yml       # Customize companies
 # 3. Add your CV
 # Create cv.md in the project root with your CV in markdown
 
-# 4. Personalize with Claude
-claude   # Open Claude Code in this directory
+# 4. Personalize with your CLI
+# Claude Code
+claude
 
-# Then ask Claude to adapt the system to you:
+# or Gemini CLI
+gemini
+
+# Then ask your agent to adapt the system to you:
 # "Change the archetypes to backend engineering roles"
 # "Translate the modes to English"
 # "Add these 5 companies to portals.yml"
@@ -78,7 +82,7 @@ claude   # Open Claude Code in this directory
 # Paste a job URL or run /career-ops
 ```
 
-> **The system is designed to be customized by Claude itself.** Modes, archetypes, scoring weights, negotiation scripts -- just ask Claude to change them. It reads the same files it uses, so it knows exactly what to edit.
+> **The system is designed to be customized by your agent CLI.** Modes, archetypes, scoring weights, negotiation scripts -- just ask your agent to change them. It reads the same files it uses, so it knows exactly what to edit.
 
 See [docs/SETUP.md](docs/SETUP.md) for the full setup guide.
 
