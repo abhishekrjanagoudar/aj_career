@@ -121,8 +121,15 @@ func main() {
 
 	careerOpsPath := *pathFlag
 
-	// Load applications
+	// Load applications with fallback paths so the dashboard works when launched
+	// from either repo root or the dashboard subdirectory.
 	apps := data.ParseApplications(careerOpsPath)
+	if apps == nil && careerOpsPath == "." {
+		if fallbackApps := data.ParseApplications(".."); fallbackApps != nil {
+			careerOpsPath = ".."
+			apps = fallbackApps
+		}
+	}
 	if apps == nil {
 		fmt.Fprintf(os.Stderr, "Error: could not find applications.md in %s or %s/data/\n", careerOpsPath, careerOpsPath)
 		os.Exit(1)

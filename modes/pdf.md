@@ -26,7 +26,7 @@ Si el usuario no especifica motor, usar `latex` por defecto.
 10. Construye competency grid desde requisitos del JD (6-8 keyword phrases)
 11. Inyecta keywords naturalmente en logros existentes (NUNCA inventa)
 12. Genera contenido personalizado según motor:
-   - `latex`: reutiliza `AJ CV/resume.tex` como base y añade sección **Core Competencies** con 6-10 keywords del JD
+   - `latex`: reutiliza `AJ CV/resume.tex` como base y añade o amplía la sección **Skills** con 6-10 keywords del JD
    - `html`: genera HTML completo desde template + contenido personalizado
    - `both`: hace ambos
 13. Escribe assets temporales:
@@ -54,7 +54,7 @@ Si el usuario no especifica motor, usar `latex` por defecto.
 
 - En el flujo LaTeX, personalizar solo por:
    - selección de keywords reales del JD
-   - sección explícita de `Core Competencies`
+   - sección explícita de `Skills`
    - contexto de rol/empresa
 - NUNCA inventar logros, años, tecnologías o métricas no presentes en el CV fuente.
 
@@ -73,11 +73,11 @@ Si el usuario no especifica motor, usar `latex` por defecto.
 
 1. Header (nombre grande, gradiente, contacto, link portfolio)
 2. Professional Summary (3-4 líneas, keyword-dense)
-3. Core Competencies (6-8 keyword phrases en flex-grid)
+3. Skills (keyword phrases relevantes del JD)
 4. Work Experience (cronológico inverso)
 5. Projects (top 3-4 más relevantes)
 6. Education & Certifications
-7. Skills (idiomas + técnicos)
+7. Languages
 
 ## Estrategia de keyword injection (ético, basado en verdad)
 
@@ -132,7 +132,7 @@ Compilación:
 - Papel: `--format=letter|a4`
 - Personalización ATS: `--keywords`, `--job-title`, `--company`
 
-La personalización LaTeX añade la sección `Core Competencies` antes de `Languages` sin modificar la experiencia base.
+La personalización LaTeX añade o amplía la sección `Skills` sin modificar la experiencia base.
 
 ## Post-generación
 

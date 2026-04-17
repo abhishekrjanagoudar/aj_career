@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Abhishek Janagoudar | Robotics & Automation</title>
+    <meta name="description"
+        content="Interactive resume of Abhishek Janagoudar – Master's student in Automation and Robotics, ROS 2 developer, SLAM engineer, and Industry 4.0 enthusiast." />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #050a14;
+            --bg2: #0a1628;
+            --bg3: #0f1e38;
+            --accent: #00d4ff;
+            --accent2: #7c3aed;
+            --accent3: #10b981;
+            --accent4: #f59e0b;
+            --text: #e2e8f0;
+            --muted: #64748b;
+            --card: rgba(255, 255, 255, 0.04);
+            --border: rgba(0, 212, 255, 0.15);
+            --glow: 0 0 40px rgba(0, 212, 255, 0.15);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .bg-grid {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background-image: linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% {
+                background-position: 0 0;
+            }
+
+            100% {
+                background-position: 60px 60px;
+            }
+        }
+
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 0;
+            pointer-events: none;
+            animation: orbFloat 8s ease-in-out infinite alternate;
+        }
+
+        .orb1 {
+            width: 500px;
+            height: 500px;
+            background: rgba(0, 212, 255, 0.07);
+            top: -150px;
+            left: -150px;
+        }
+
+        .orb2 {
+            width: 400px;
+            height: 400px;
+            background: rgba(124, 58, 237, 0.07);
+            bottom: -100px;
+            right: -100px;
+            animation-delay: -4s;
+        }
+
+        .orb3 {
+            width: 300px;
+            height: 300px;
+            background: rgba(16, 185, 129, 0.05);
+            top: 40%;
+            left: 40%;
+            animation-delay: -2s;
+        }
+
+        @keyframes orbFloat {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            100% {
+                transform: translate(30px, 30px) scale(1.1);
+            }
+        }
+
+        .wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 16px 0;
+            background: rgba(5, 10, 20, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        nav .wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-logo {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: 0.05em;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .nav-logo span {
+            color: var(--text);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--muted);
+            font-size: 0.85rem;
+            font-weight: 500;
+            padding: 6px 14px;
+            border-radius: 100px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+            background: rgba(0, 212, 255, 0.08);
+        }
+
+        .nav-links a.active {
+            color: var(--accent);
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 80px;
+        }
+
+        .hero-inner {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 48px;
+            align-items: center;
+            width: 100%;
+        }
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 212, 255, 0.08);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 100px;
+            padding: 6px 16px;
+            font-size: 0.8rem;
+            color: var(--accent);
+            margin-bottom: 24px;
+            width: fit-content;
+        }
+
+        .hero-tag-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--accent3);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.5;
+                transform: scale(0.8);
+            }
+        }
+
+        .hero-name {
+            font-size: clamp(2.4rem, 6vw, 3.8rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #fff 0%, var(--accent) 60%, var(--accent2) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-title {
+            font-size: 1.15rem;
+            color: var(--muted);
+            font-weight: 400;
+            margin-bottom: 20px;
+        }
+
+        .hero-title span {
+            color: var(--accent3);
+            font-weight: 600;
+        }
+
+        .hero-summary {
+            font-size: 0.95rem;
+            color: #94a3b8;
+            line-height: 1.75;
+            max-width: 540px;
+            margin-bottom: 32px;
+        }
+
+        .hero-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 36px;
+        }
+
+        .chip {
+            padding: 5px 14px;
+            border-radius: 100px;
+            font-size: 0.78rem;
+            font-weight: 500;
+            border: 1px solid;
+            cursor: default;
+            transition: transform 0.2s;
+        }
+
+        .chip:hover {
+            transform: translateY(-2px);
+        }
+
+        .chip-blue {
+            color: var(--accent);
+            border-color: rgba(0, 212, 255, 0.3);
+            background: rgba(0, 212, 255, 0.06);
+        }
+
+        .chip-purple {
+            color: #a78bfa;
+            border-color: rgba(124, 58, 237, 0.3);
+            background: rgba(124, 58, 237, 0.06);
+        }
+
+        .chip-green {
+            color: var(--accent3);
+            border-color: rgba(16, 185, 129, 0.3);
+            background: rgba(16, 185, 129, 0.06);
+        }
+
+        .chip-amber {
+            color: var(--accent4);
+            border-color: rgba(245, 158, 11, 0.3);
+            background: rgba(245, 158, 11, 0.06);
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: #fff;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.25);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 50px rgba(0, 212, 255, 0.4);
+        }
+
+        .btn-ghost {
+            background: var(--card);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-ghost:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .hero-avatar-wrap {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            flex-shrink: 0;
+        }
+
+        .hero-avatar-ring {
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            background: linear-gradient(135deg, var(--accent), var(--accent2)) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: destination-out;
+            mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+            animation: rotateSlow 8s linear infinite;
+        }
+
+        @keyframes rotateSlow {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .hero-avatar {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 3px solid rgba(0, 212, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+            display: block;
+        }
+
+        .contact-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 28px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.82rem;
+            color: var(--muted);
+        }
+
+        .contact-item svg {
+            color: var(--accent);
+        }
+
+        .contact-item a {
+            color: var(--muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .contact-item a:hover {
+            color: var(--accent);
+        }
+
+        section {
+            padding: 80px 0;
+        }
+
+        .section-label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+
+        .section-label-text {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--accent);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .section-label-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(0, 212, 255, 0.3), transparent);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .section-sub {
+            color: var(--muted);
+            font-size: 0.95rem;
+            margin-bottom: 40px;
+        }
+
+        .timeline {
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--accent), transparent);
+            margin-left: 19px;
+        }
+
+        .exp-card {
+            position: relative;
+            padding-left: 60px;
+            margin-bottom: 40px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .exp-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .exp-dot {
+            position: absolute;
+            left: 0;
+            top: 4px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--bg2);
+            border: 2px solid var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .exp-card:hover .exp-dot {
+            background: var(--accent);
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+        }
+
+        .exp-inner {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .exp-card:hover .exp-inner {
+            border-color: rgba(0, 212, 255, 0.3);
+            box-shadow: var(--glow);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .exp-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .exp-company {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .exp-date {
+            font-size: 0.78rem;
+            color: var(--accent);
+            font-family: 'JetBrains Mono', monospace;
+            white-space: nowrap;
+        }
+
+        .exp-role {
+            font-size: 0.88rem;
+            color: var(--accent3);
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .exp-location {
+            font-size: 0.78rem;
+            color: var(--muted);
+            margin-bottom: 14px;
+        }
+
+        .exp-bullets {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .exp-bullets li {
+            font-size: 0.875rem;
+            color: #94a3b8;
+            padding-left: 18px;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .exp-bullets li::before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-size: 0.85rem;
+        }
+
+        .exp-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 14px;
+        }
+
+        .exp-tag {
+            font-size: 0.72rem;
+            padding: 3px 10px;
+            border-radius: 100px;
+            background: rgba(0, 212, 255, 0.08);
+            color: var(--accent);
+            border: 1px solid rgba(0, 212, 255, 0.15);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .edu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media(max-width:620px) {
+            .edu-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .edu-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .edu-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .edu-card:hover {
+            border-color: rgba(0, 212, 255, 0.3);
+            box-shadow: var(--glow);
+        }
+
+        .edu-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+        }
+
+        .edu-degree {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .edu-school {
+            font-size: 0.85rem;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .edu-date {
+            font-size: 0.78rem;
+            color: var(--muted);
+            margin-bottom: 12px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .edu-body {
+            font-size: 0.82rem;
+            color: #94a3b8;
+            line-height: 1.65;
+        }
+
+        .lang-row {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .lang-card {
+            flex: 1;
+            min-width: 140px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .lang-card:hover {
+            border-color: rgba(0, 212, 255, 0.3);
+            box-shadow: var(--glow);
+            transform: translateY(-3px);
+        }
+
+        .lang-flag {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .lang-name {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+
+        .lang-level {
+            font-size: 0.8rem;
+            color: var(--accent);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        #skills {
+            background: linear-gradient(180deg, transparent, rgba(0, 212, 255, 0.02), transparent);
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .skill-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px;
+            transition: all 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .skill-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .skill-card:hover {
+            border-color: rgba(0, 212, 255, 0.3);
+            box-shadow: var(--glow);
+            transform: translateY(-4px);
+        }
+
+        .skill-card-icon {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .skill-card-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text);
+        }
+
+        .skill-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media(max-width:640px) {
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .project-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .project-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .project-card:hover {
+            border-color: rgba(0, 212, 255, 0.3);
+            box-shadow: var(--glow);
+            transform: translateY(-4px);
+        }
+
+        .project-icon {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .project-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--text);
+        }
+
+        .project-desc {
+            font-size: 0.82rem;
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 40px 0;
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.82rem;
+        }
+
+        footer span {
+            color: var(--accent);
+        }
+
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            z-index: 200;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            transition: width 0.1s linear;
+        }
+
+        #cursor-glow {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.05) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            transition: left 0.1s, top 0.1s;
+        }
+
+        @media (max-width: 700px) {
+            .hero-inner {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-avatar-wrap {
+                display: none;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="cursor-glow"></div>
+    <div id="progress-bar"></div>
+    <div class="bg-grid"></div>
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+
+    <!-- NAV -->
+    <nav id="navbar">
+        <div class="wrapper">
+            <div class="nav-logo">AJ<span>.dev</span></div>
+            <ul class="nav-links">
+                <li><a href="#hero" id="nav-hero">Home</a></li>
+                <li><a href="#experience" id="nav-exp">Experience</a></li>
+                <li><a href="#education" id="nav-edu">Education</a></li>
+                <li><a href="#skills" id="nav-skills">Skills</a></li>
+                <li><a href="#projects" id="nav-proj">Projects</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section id="hero">
+        <div class="wrapper">
+            <div class="hero-inner">
+                <div class="hero-content">
+                    <div class="hero-tag">
+                        <div class="hero-tag-dot"></div>
+                        Open to Working Student &amp; Thesis opportunities
+                    </div>
+                    <h1 class="hero-name">Abhishek<br>Janagoudar</h1>
+                    <p class="hero-title">Robotics &amp; Automation Engineer · <span>SLAM, ROS 2, Industry 4.0</span>
+                    </p>
+                    <p class="hero-summary">
+                        Master's student in Electrical and Information Technology at Hochschule Darmstadt,
+                        specializing in Automation and Robotics. Currently gaining hands-on experience
+                        in mobile robotics — working with SLAM, AGV navigation, and AAS digital twins
+                        at BÄR Automation GmbH.
+                    </p>
+                    <div class="hero-chips">
+                        <span class="chip chip-blue">ROS 2</span>
+                        <span class="chip chip-blue">SLAM Toolbox</span>
+                        <span class="chip chip-blue">Cartographer</span>
+                        <span class="chip chip-green">Nav2 / VDA 5050</span>
+                        <span class="chip chip-purple">AAS v3.1</span>
+                        <span class="chip chip-purple">Python / React</span>
+                        <span class="chip chip-amber">TIA Portal / Safety PLC</span>
+                        <span class="chip chip-amber">OPC UA / Node-RED</span>
+                    </div>
+                    <div class="hero-cta">
+                        <a class="btn btn-primary" href="mailto:abhirj1999@gmail.com" id="btn-contact">✉ Get in
+                            Touch</a>
+                        <a class="btn btn-ghost" href="https://linkedin.com/in/abhishek-janagoudar-478a611a4"
+                            target="_blank" id="btn-linkedin">🔗 LinkedIn</a>
+                    </div>
+                    <div class="contact-row">
+                        <span class="contact-item">
+                            <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                            </svg>
+                            Stuttgart, Germany
+                        </span>
+                        <span class="contact-item">
+                            <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.47 11.47 0 003.58.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.47 11.47 0 00.57 3.58 1 1 0 01-.25 1.02l-2.2 2.19z" />
+                            </svg>
+                            +49 015510610381
+                        </span>
+                        <span class="contact-item">
+                            <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" />
+                            </svg>
+                            Visa valid till Feb 2027
+                        </span>
+                    </div>
+                </div>
+                <div class="hero-avatar-wrap">
+                    <div class="hero-avatar-ring"></div>
+                    <div class="hero-avatar">
+                        <img src="assets/profile-photo.png" alt="Abhishek Janagoudar" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience">
+        <div class="wrapper">
+            <div class="section-label">
+                <span class="section-label-text">01 / Experience</span>
+                <div class="section-label-line"></div>
+            </div>
+            <h2 class="section-title">Where I've Worked</h2>
+            <p class="section-sub">From industrial automation to cutting-edge mobile robotics</p>
+            <div class="timeline">
+
+                <div class="exp-card anim-item">
+                    <div class="exp-dot">🤖</div>
+                    <div class="exp-inner">
+                        <div class="exp-header">
+                            <span class="exp-company">BÄR Automation GmbH</span>
+                            <span class="exp-date">11/2025 – Present</span>
+                        </div>
+                        <div class="exp-role">Mobile Robots Development Intern</div>
+                        <div class="exp-location">📍 Stuttgart, Germany</div>
+                        <ul class="exp-bullets">
+                            <li>Explored and compared SLAM techniques — learned to configure SLAM Toolbox and Google
+                                Cartographer in ROS 2, creating maps in async and lifelong modes to find the best fit
+                                for our mobile robots.</li>
+                            <li>Gained hands-on experience tuning LiDAR scan matching and odometry parameters in ROS 2
+                                Nav2 to help robots localize more accurately and reduce positional drift over time.</li>
+                            <li>Worked with AGV standards — learned how VDA 5050 works and helped set up communication
+                                between robots for multi-vendor fleet coordination.</li>
+                            <li>Had the opportunity to build digital twin tools using Python and React — helped create a
+                                tool that automatically generates AAS v3.1 shells for the ARENA2036 project. Learned
+                                about submodels (Nameplate, Location, 3D Model) and how digital twins are structured for
+                                Industry 4.0, connecting everything to BaSyx.</li>
+                            <li>Learned to debug complex ROS 2 issues like TF tree misalignments and fixing map-to-odom
+                                frame synchronization across simulation environments.</li>
+                        </ul>
+                        <div class="exp-tags">
+                            <span class="exp-tag">ROS 2</span><span class="exp-tag">SLAM Toolbox</span><span
+                                class="exp-tag">Cartographer</span>
+                            <span class="exp-tag">Nav2</span><span class="exp-tag">VDA 5050</span><span
+                                class="exp-tag">AAS v3.1</span>
+                            <span class="exp-tag">Python</span><span class="exp-tag">React</span><span
+                                class="exp-tag">BaSyx</span><span class="exp-tag">Gazebo</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exp-card anim-item">
+                    <div class="exp-dot">⚡</div>
+                    <div class="exp-inner">
+                        <div class="exp-header">
+                            <span class="exp-company">J. Ray McDermott Engineering Services</span>
+                            <span class="exp-date">02/2024 – 08/2024</span>
+                        </div>
+                        <div class="exp-role">Associate System Engineer — AVEVA Electrical Admin V12</div>
+                        <div class="exp-location">📍 Chennai, India</div>
+                        <ul class="exp-bullets">
+                            <li>Administered AVEVA Electrical V12 for Ruya EPCIC offshore projects (11 &amp; 13),
+                                delivering 50+ electrical datasheets and drawings on schedule.</li>
+                            <li>Standardized project workflows to reduce rework and improve cross-team coordination.
+                            </li>
+                            <li>Led tool training sessions, cutting internal troubleshooting incidents by 30% within 5
+                                months.</li>
+                        </ul>
+                        <div class="exp-tags">
+                            <span class="exp-tag">AVEVA Electrical V12</span><span class="exp-tag">EPCIC</span><span
+                                class="exp-tag">Project Management</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exp-card anim-item">
+                    <div class="exp-dot">🏭</div>
+                    <div class="exp-inner">
+                        <div class="exp-header">
+                            <span class="exp-company">Infosys Ltd.</span>
+                            <span class="exp-date">09/2021 – 02/2024</span>
+                        </div>
+                        <div class="exp-role">Senior System Engineer — AVEVA Engineering V15 E&amp;I Admin</div>
+                        <div class="exp-location">📍 Mysore, India</div>
+                        <ul class="exp-bullets">
+                            <li>Managed and optimized AVEVA Engineering 15.x for Electrical &amp; Instrumentation
+                                projects — covering architecture, operations, and system maintenance.</li>
+                            <li>Acted as Scrum facilitator for sprint reviews, retrospectives, and daily standups,
+                                promoting Agile and CI/CD integration.</li>
+                            <li>Delivered 50+ User Story items — Electrical Load lists, Cable Schedules, Reports,
+                                Datasheets, and Drawings.</li>
+                            <li>Built data models with classes, attributes, associations, and KKS naming conventions.
+                            </li>
+                            <li>Mentored 8 engineers in recurring technical sessions and supported project builds and
+                                deployments.</li>
+                        </ul>
+                        <div class="exp-tags">
+                            <span class="exp-tag">AVEVA Engineering V15</span><span class="exp-tag">Agile /
+                                Scrum</span><span class="exp-tag">CI/CD</span><span class="exp-tag">Jira</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exp-card anim-item">
+                    <div class="exp-dot">🔌</div>
+                    <div class="exp-inner">
+                        <div class="exp-header">
+                            <span class="exp-company">Arkay Energy Ltd. &amp; Larsen &amp; Toubro</span>
+                            <span class="exp-date">06/2019 – 07/2019</span>
+                        </div>
+                        <div class="exp-role">Electrical Intern (Commissioning &amp; O&amp;M)</div>
+                        <div class="exp-location">📍 India</div>
+                        <ul class="exp-bullets">
+                            <li>Supported commissioning and testing of substation systems, performed O&amp;M tasks, and
+                                learned industrial safety practices (Arkay Energy).</li>
+                            <li>Assisted in electrical system setup, testing, and troubleshooting (Larsen &amp; Toubro).
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- EDUCATION -->
+    <section id="education">
+        <div class="wrapper">
+            <div class="section-label">
+                <span class="section-label-text">02 / Education</span>
+                <div class="section-label-line"></div>
+            </div>
+            <h2 class="section-title">Academic Background</h2>
+            <p class="section-sub">Building the theory behind the practice</p>
+
+            <div class="edu-grid" style="margin-bottom: 48px;">
+                <div class="edu-card anim-item">
+                    <div class="edu-degree">M.Sc. Electrical &amp; Information Technology</div>
+                    <div class="edu-school">🎓 Hochschule Darmstadt (Darmstadt UAS)</div>
+                    <div class="edu-date">09/2024 – Present · Darmstadt, Germany</div>
+                    <div class="edu-body">
+                        Specializing in <strong>Automation and Robotics</strong>.<br><br>
+                        <em>Courses:</em> Industrial Robotics · Safety in Industrial Automation · Computer Vision ·
+                        Industry 4.0 · IIoT · Adaptive Control · State Space Analysis · Advanced Programming · Advanced
+                        Sensors · Human Machine Interface
+                    </div>
+                </div>
+                <div class="edu-card anim-item">
+                    <div class="edu-degree">B.E. Electrical &amp; Electronics Engineering</div>
+                    <div class="edu-school">🎓 The National Institute of Engineering</div>
+                    <div class="edu-date">07/2017 – 09/2021 · Mysore, India</div>
+                    <div class="edu-body">
+                        <strong>Grade:</strong> 8.12 CGPA (German equivalent: <strong>1.7</strong>)<br><br>
+                        Strong foundation in electrical systems, control theory, and electronics engineering.
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-label" style="margin-top: 20px;">
+                <span class="section-label-text">Languages</span>
+                <div class="section-label-line"></div>
+            </div>
+            <div class="lang-row">
+                <div class="lang-card">
+                    <div class="lang-flag">🇬🇧</div>
+                    <div class="lang-name">English</div>
+                    <div class="lang-level">IELTS 7.5 · C1</div>
+                </div>
+                <div class="lang-card">
+                    <div class="lang-flag">🇩🇪</div>
+                    <div class="lang-name">Deutsch</div>
+                    <div class="lang-level">A2.2</div>
+                </div>
+                <div class="lang-card">
+                    <div class="lang-flag">🇮🇳</div>
+                    <div class="lang-name">Hindi</div>
+                    <div class="lang-level">Native</div>
+                </div>
+                <div class="lang-card">
+                    <div class="lang-flag">🌟</div>
+                    <div class="lang-name">Kannada</div>
+                    <div class="lang-level">Native</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills">
+        <div class="wrapper">
+            <div class="section-label">
+                <span class="section-label-text">03 / Skills</span>
+                <div class="section-label-line"></div>
+            </div>
+            <h2 class="section-title">What I Know</h2>
+            <p class="section-sub">Technologies and tools I've worked with</p>
+            <div class="skills-grid">
+                <div class="skill-card anim-item">
+                    <div class="skill-card-icon">🤖</div>
+                    <div class="skill-card-title">Robotics &amp; SLAM</div>
+                    <div class="skill-pills">
+                        <span class="chip chip-blue">ROS 2</span><span class="chip chip-blue">SLAM Toolbox</span>
+                        <span class="chip chip-blue">Cartographer</span><span class="chip chip-blue">AMCL</span>
+                        <span class="chip chip-blue">Nav2</span><span class="chip chip-blue">VDA 5050</span>
+                        <span class="chip chip-blue">Gazebo</span><span class="chip chip-blue">RViz</span>
+                        <span class="chip chip-blue">Forward/Inverse Kinematics</span><span class="chip chip-blue">DH
+                            Modeling</span>
+                    </div>
+                </div>
+                <div class="skill-card anim-item">
+                    <div class="skill-card-icon">👁️</div>
+                    <div class="skill-card-title">Computer Vision</div>
+                    <div class="skill-pills">
+                        <span class="chip chip-purple">OpenCV</span><span class="chip chip-purple">Image
+                            Preprocessing</span>
+                        <span class="chip chip-purple">Camera Calibration</span><span class="chip chip-purple">Object
+                            Detection</span>
+                        <span class="chip chip-purple">Segmentation</span><span class="chip chip-purple">Multi-Object
+                            Tracking</span>
+                        <span class="chip chip-purple">LiDAR / Point Cloud</span>
+                    </div>
+                </div>
+                <div class="skill-card anim-item">
+                    <div class="skill-card-icon">🏭</div>
+                    <div class="skill-card-title">Industry 4.0 &amp; IIoT</div>
+                    <div class="skill-pills">
+                        <span class="chip chip-green">OPC UA</span><span class="chip chip-green">Node-RED</span>
+                        <span class="chip chip-green">MQTT</span><span class="chip chip-green">AAS v3.1</span>
+                        <span class="chip chip-green">BaSyx</span><span class="chip chip-green">Digital Twins</span>
+                        <span class="chip chip-green">Virtual Commissioning</span><span class="chip chip-green">TIA
+                            Portal</span>
+                    </div>
+                </div>
+                <div class="skill-card anim-item">
+                    <div class="skill-card-icon">⚙️</div>
+                    <div class="skill-card-title">Automation &amp; Safety</div>
+                    <div class="skill-pills">
+                        <span class="chip chip-amber">Siemens S7 Safety</span><span class="chip chip-amber">Safety
+                            PLC</span>
+                        <span class="chip chip-amber">SISTEMA</span><span class="chip chip-amber">EN ISO 13849-1</span>
+                        <span class="chip chip-amber">PLCSim Advanced</span><span class="chip chip-amber">PLC
+                            Programming</span>
+                    </div>
+                </div>
+                <div class="skill-card anim-item">
+                    <div class="skill-card-icon">💻</div>
+                    <div class="skill-card-title">Programming</div>
+                    <div class="skill-pills">
+                        <span class="chip chip-blue">Python</span><span class="chip chip-blue">C++</span>
+                        <span class="chip chip-blue">SQL</span><span class="chip chip-purple">React</span>
+                        <span class="chip chip-purple">JavaScript</span><span class="chip chip-green">Git / CI/CD</span>
+                        <span class="chip chip-amber">MATLAB / Simulink</span>
+                    </div>
+                </div>
+                <div class="skill-card anim-item">
+                    <div class="skill-card-icon">🛠️</div>
+                    <div class="skill-card-title">Engineering Tools</div>
+                    <div class="skill-pills">
+                        <span class="chip chip-amber">AVEVA Engineering v15</span><span class="chip chip-amber">AVEVA
+                            Electrical v12</span>
+                        <span class="chip chip-green">Jira / Rally</span><span class="chip chip-green">Agile /
+                            Scrum</span>
+                        <span class="chip chip-blue">Webots</span><span class="chip chip-blue">Gazebo</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects">
+        <div class="wrapper">
+            <div class="section-label">
+                <span class="section-label-text">04 / Projects</span>
+                <div class="section-label-line"></div>
+            </div>
+            <h2 class="section-title">Things I've Built &amp; Learned</h2>
+            <p class="section-sub">University lab projects and hands-on builds</p>
+            <div class="projects-grid">
+                <div class="project-card anim-item">
+                    <div class="project-icon">🦾</div>
+                    <div class="project-title">3-DOF Robotic Arm (Webots)</div>
+                    <div class="project-desc">Built and programmed a 3-DOF arm with servo joints, implementing forward
+                        and inverse kinematics, plus a Python interface for Arduino–PC communication.</div>
+                </div>
+                <div class="project-card anim-item">
+                    <div class="project-icon">☁️</div>
+                    <div class="project-title">Point Cloud Segmentation (ROS)</div>
+                    <div class="project-desc">Created an indoor mapping pipeline using a Hesai XT16 LiDAR on a UniTree
+                        quadruped robot. Applied ML methods for feature extraction from point clouds.</div>
+                </div>
+                <div class="project-card anim-item">
+                    <div class="project-icon">👀</div>
+                    <div class="project-title">Visual Servoing (Igus ReBeL 6DOF)</div>
+                    <div class="project-desc">Used OpenCV template-matching to map image errors to robot joint commands
+                        for closed-loop visual control of a 6DOF robot arm.</div>
+                </div>
+                <div class="project-card anim-item">
+                    <div class="project-icon">📐</div>
+                    <div class="project-title">UR5/UR10 Kinematics (MATLAB)</div>
+                    <div class="project-desc">Built MATLAB/Simulink models to calculate forward and inverse kinematics
+                        and analyze manipulator behavior under external loads.</div>
+                </div>
+                <div class="project-card anim-item">
+                    <div class="project-icon">🌐</div>
+                    <div class="project-title">Industry 4.0 Lab — OPC UA &amp; Node-RED</div>
+                    <div class="project-desc">Configured OPC UA servers on Siemens S7-1516F, built interactive Node-RED
+                        dashboards, and ran virtual commissioning with TIA Portal and PLCSim Advanced.</div>
+                </div>
+                <div class="project-card anim-item">
+                    <div class="project-icon">🛡️</div>
+                    <div class="project-title">Safety Automation Lab</div>
+                    <div class="project-desc">Programmed Siemens S7-1516F safety PLCs and ET200SP modules. Evaluated
+                        functions per EN ISO 13849-1 with SISTEMA, calculating performance levels for compliance.</div>
+                </div>
+                <div class="project-card anim-item">
+                    <div class="project-icon">🎮</div>
+                    <div class="project-title">C++ Game &amp; Database Projects</div>
+                    <div class="project-desc">Built console-based BattleShip and Reversi games in C++. Also designed a
+                        university enrollment database system using object-oriented programming principles.</div>
+                </div>
+                <div class="project-card anim-item">
+                    <div class="project-icon">🏷️</div>
+                    <div class="project-title">AAS v3.1 Digital Twin Generator</div>
+                    <div class="project-desc">Helped build a Python + React tool at BÄR that auto-generates Asset
+                        Administration Shells for the ARENA2036 project — handling 160+ IDTA attributes and BaSyx
+                        integration.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="wrapper">
+            <p>Built with ❤️ by <span>Abhishek Janagoudar</span> · <span>March 2026</span></p>
+            <p style="margin-top:6px; color: var(--muted);">abhirj1999@gmail.com · Stuttgart, Germany</p>
+        </div>
+    </footer>
+
+    <script>
+        const glow = document.getElementById('cursor-glow');
+        document.addEventListener('mousemove', e => { glow.style.left = e.clientX + 'px'; glow.style.top = e.clientY + 'px'; });
+
+        const bar = document.getElementById('progress-bar');
+        window.addEventListener('scroll', () => {
+            const scrolled = window.scrollY;
+            const total = document.documentElement.scrollHeight - window.innerHeight;
+            bar.style.width = (scrolled / total * 100) + '%';
+        });
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const siblings = entry.target.parentElement.querySelectorAll('.anim-item');
+                    let delay = 0;
+                    siblings.forEach((el, idx) => { if (el === entry.target) delay = idx * 80; });
+                    setTimeout(() => { entry.target.classList.add('visible'); }, delay);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.anim-item').forEach(el => observer.observe(el));
+
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-links a');
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(sec => { if (window.scrollY >= sec.offsetTop - 120) current = sec.id; });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+            });
+        });
+    </script>
+
+</body>
+
+</html>

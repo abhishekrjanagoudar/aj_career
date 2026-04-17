@@ -65,7 +65,7 @@ node generate-pdf-latex.mjs "AJ CV/resume.tex" output/cv-candidate-example-latex
   --company="Example Robotics GmbH"
 ```
 
-This injects a `Core Competencies` section for that application while keeping your template structure.
+This injects or extends the `Skills` section for that application while keeping your template structure.
 
 ## Negotiation Scripts (modes/_shared.md)
 

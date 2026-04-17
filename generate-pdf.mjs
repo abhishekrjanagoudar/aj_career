@@ -1,18 +1,25 @@
 #!/usr/bin/env node
 
 /**
- * generate-pdf.mjs — HTML → PDF via Playwright
+ * generate-pdf.mjs — Unified PDF entrypoint
  *
  * Usage:
- *   node career-ops/generate-pdf.mjs <input.html> <output.pdf> [--format=letter|a4]
+ *   node career-ops/generate-pdf.mjs <input.html|input.tex> <output.pdf> [--format=letter|a4]
+ *
+ * Behavior:
+ * - If input is .html → render via Playwright (existing path).
+ * - If input is .tex  → delegate to generate-pdf-latex.mjs (uses resume.tex + resume.cls).
+ * - If no input is provided and AJ CV/resume.tex exists → default to LaTeX template path.
  *
  * Requires: @playwright/test (or playwright) installed.
  * Uses Chromium headless to render the HTML and produce a clean, ATS-parseable PDF.
  */
 
 import { chromium } from 'playwright';
-import { resolve, dirname } from 'path';
+import { existsSync } from 'fs';
+import { resolve, dirname, join } from 'path';
 import { readFile } from 'fs/promises';
+import { spawnSync } from 'child_process';
 import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -74,11 +81,17 @@ async function generatePDF() {
   const args = process.argv.slice(2);
 
   // Parse arguments
-  let inputPath, outputPath, format = 'a4';
+  let inputPath;
+  let outputPath;
+  let format = 'a4';
+  const optionArgs = [];
 
   for (const arg of args) {
     if (arg.startsWith('--format=')) {
       format = arg.split('=')[1].toLowerCase();
+      optionArgs.push(arg);
+    } else if (arg.startsWith('--')) {
+      optionArgs.push(arg);
     } else if (!inputPath) {
       inputPath = arg;
     } else if (!outputPath) {
@@ -86,13 +99,41 @@ async function generatePDF() {
     }
   }
 
+  // If no explicit input is passed, default to user's LaTeX template when present.
+  const defaultLatexInput = resolve(__dirname, 'AJ CV/resume.tex');
+  const hasDefaultLatex = existsSync(defaultLatexInput);
+  const usingDefaultLatex = !inputPath && hasDefaultLatex;
+
+  if (usingDefaultLatex) {
+    inputPath = defaultLatexInput;
+    if (!outputPath) {
+      const date = new Date().toISOString().slice(0, 10);
+      outputPath = resolve(__dirname, `output/cv-candidate-default-${date}-latex.pdf`);
+    }
+  }
+
   if (!inputPath || !outputPath) {
-    console.error('Usage: node generate-pdf.mjs <input.html> <output.pdf> [--format=letter|a4]');
+    console.error('Usage: node generate-pdf.mjs <input.html|input.tex> <output.pdf> [--format=letter|a4] [--keywords="..."] [--job-title="..."] [--company="..."] [--engine=...]');
     process.exit(1);
   }
 
-  inputPath = resolve(inputPath);
-  outputPath = resolve(outputPath);
+  const resolvedInput = resolve(inputPath);
+  const resolvedOutput = resolve(outputPath);
+  const isLatexInput = /\.tex$/i.test(resolvedInput);
+
+  // Delegate LaTeX builds to the dedicated generator so resume.tex/resume.cls are honored.
+  if (isLatexInput) {
+    const latexScript = resolve(__dirname, 'generate-pdf-latex.mjs');
+    const latexArgs = [latexScript, resolvedInput, resolvedOutput, ...optionArgs];
+    const run = spawnSync(process.execPath, latexArgs, { stdio: 'inherit' });
+    if (run.status !== 0) {
+      process.exit(run.status ?? 1);
+    }
+    return;
+  }
+
+  inputPath = resolvedInput;
+  outputPath = resolvedOutput;
 
   // Validate format
   const validFormats = ['a4', 'letter'];

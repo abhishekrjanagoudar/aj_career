@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# career-ops batch runner — standalone orchestrator for claude -p workers
-# Reads batch-input.tsv, delegates each offer to a claude -p worker,
+# career-ops batch runner — standalone orchestrator for agent CLI workers
+# Reads batch-input.tsv, delegates each offer to a Claude/Gemini worker,
 # tracks state in batch-state.tsv for resumability.
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -23,11 +23,12 @@ DRY_RUN=false
 RETRY_FAILED=false
 START_FROM=0
 MAX_RETRIES=2
+AGENT_CLI="${AGENT_CLI:-claude}"
+AGENT_CMD="${AGENT_CMD:-}"
 
 usage() {
   cat <<'USAGE'
-career-ops batch runner — process job offers in batch via claude -p workers
-Uses your default Claude model (Claude Max subscription).
+career-ops batch runner — process job offers via Claude or Gemini CLI workers
 
 Usage: batch-runner.sh [OPTIONS]
 
@@ -37,6 +38,10 @@ Options:
   --retry-failed       Only retry offers marked as "failed" in state
   --start-from N       Start from offer ID N (skip earlier IDs)
   --max-retries N      Max retry attempts per offer (default: 2)
+  --agent-cli NAME     Agent CLI to use: claude|gemini (default: claude)
+  --agent-cmd CMD      Fully custom command (overrides --agent-cli).
+                       Must accept: <system-prompt-file> <user-prompt>
+                       Example: --agent-cmd "gemini -p --system-instruction-file"
   -h, --help           Show this help
 
 Files:
@@ -52,6 +57,9 @@ Examples:
 
   # Process all pending
   ./batch-runner.sh
+
+  # Process with Gemini CLI
+  ./batch-runner.sh --agent-cli gemini
 
   # Retry only failed offers
   ./batch-runner.sh --retry-failed
@@ -69,10 +77,33 @@ while [[ $# -gt 0 ]]; do
     --retry-failed) RETRY_FAILED=true; shift ;;
     --start-from) START_FROM="$2"; shift 2 ;;
     --max-retries) MAX_RETRIES="$2"; shift 2 ;;
+    --agent-cli) AGENT_CLI="$2"; shift 2 ;;
+    --agent-cmd) AGENT_CMD="$2"; shift 2 ;;
     -h|--help) usage; exit 0 ;;
     *) echo "Unknown option: $1"; usage; exit 1 ;;
   esac
 done
+
+resolve_agent_command() {
+  if [[ -n "$AGENT_CMD" ]]; then
+    echo "$AGENT_CMD"
+    return 0
+  fi
+
+  case "${AGENT_CLI,,}" in
+    claude)
+      echo "claude -p --dangerously-skip-permissions --append-system-prompt-file"
+      ;;
+    gemini)
+      # Gemini CLI path: system instruction file + prompt.
+      echo "gemini -p --system-instruction-file"
+      ;;
+    *)
+      echo "ERROR: Unsupported --agent-cli '$AGENT_CLI'. Use claude|gemini or --agent-cmd." >&2
+      return 1
+      ;;
+  esac
+}
 
 # Lock file to prevent double execution
 acquire_lock() {
@@ -109,8 +140,12 @@ check_prerequisites() {
     exit 1
   fi
 
-  if ! command -v claude &>/dev/null; then
-    echo "ERROR: 'claude' CLI not found in PATH."
+  local resolved_cmd
+  resolved_cmd=$(resolve_agent_command) || exit 1
+  local bin
+  bin=$(echo "$resolved_cmd" | awk '{print $1}')
+  if ! command -v "$bin" &>/dev/null; then
+    echo "ERROR: '$bin' CLI not found in PATH."
     exit 1
   fi
 
@@ -251,13 +286,12 @@ process_offer() {
     -e "s|{{ID}}|${id}|g" \
     "$PROMPT_FILE" > "$resolved_prompt"
 
-  # Launch claude -p worker (uses default model from Claude Max subscription)
+  # Launch worker using selected agent CLI (Claude/Gemini/custom)
   local exit_code=0
-  claude -p \
-    --dangerously-skip-permissions \
-    --append-system-prompt-file "$resolved_prompt" \
-    "$prompt" \
-    > "$log_file" 2>&1 || exit_code=$?
+  local resolved_cmd
+  resolved_cmd=$(resolve_agent_command) || exit 1
+  # shellcheck disable=SC2086
+  $resolved_cmd "$resolved_prompt" "$prompt" > "$log_file" 2>&1 || exit_code=$?
 
   # Cleanup resolved prompt
   rm -f "$resolved_prompt"
@@ -353,6 +387,10 @@ main() {
   fi
 
   echo "=== career-ops batch runner ==="
+  echo "Agent CLI: ${AGENT_CLI}"
+  if [[ -n "$AGENT_CMD" ]]; then
+    echo "Custom agent cmd: $AGENT_CMD"
+  fi
   echo "Parallel: $PARALLEL | Max retries: $MAX_RETRIES"
   echo "Input: $total_input offers"
   echo ""

@@ -45,7 +45,7 @@ Built by someone who used it to evaluate 740+ job offers, generate 100+ tailored
 | **ATS PDF Generation** | Keyword-injected CVs with Space Grotesk + DM Sans design |
 | **LaTeX PDF Generation** | Use your own `AJ CV/resume.tex` + `resume.cls` template with ATS keyword injection |
 | **Portal Scanner** | 45+ companies pre-configured (Anthropic, OpenAI, ElevenLabs, Retool, n8n...) + custom queries across Ashby, Greenhouse, Lever, Wellfound |
-| **Batch Processing** | Parallel evaluation with `claude -p` workers |
+| **Batch Processing** | Parallel evaluation with Claude or Gemini CLI workers |
 | **Dashboard TUI** | Terminal UI to browse, filter, and sort your pipeline |
 | **Human-in-the-Loop** | AI evaluates and recommends, you decide and act. The system never submits an application -- you always have the final call |
 | **Pipeline Integrity** | Automated merge, dedup, status normalization, health checks |
@@ -150,6 +150,12 @@ go build -o career-dashboard .
 ./career-dashboard
 ```
 
+If you launch from inside `dashboard/` and your data is in repo root, use:
+
+```bash
+./career-dashboard --path ..
+```
+
 Features: 6 filter tabs, 4 sort modes, grouped/flat view, lazy-loaded previews, inline status changes.
 
 ## Project Structure
@@ -199,6 +205,7 @@ career-ops/
 - **Agent**: Claude Code with custom skills and modes
 - **PDF**: Playwright/Puppeteer + HTML template
 - **PDF (LaTeX option)**: pdflatex/xelatex/lualatex + user AJ CV template
+  - If no engine is installed on Linux, the generator bootstraps a local Tectonic binary automatically.
 - **Scanner**: Playwright + Greenhouse API + WebSearch
 - **Dashboard**: Go + Bubble Tea + Lipgloss (Catppuccin Mocha theme)
 - **Data**: Markdown tables + YAML config + TSV batch files
